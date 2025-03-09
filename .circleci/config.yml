@@ -15,7 +15,7 @@ jobs:
       - checkout
       - run:
           name: Coverage with docker
-          command: cargo tarpaulin --verbose --all-features --workspace --timeout 120 --out xml
+          command: cargo tarpaulin --ignore-tests --verbose --all-features --workspace --timeout 120 --out xml
       - run:
           name: Migrate database
           command: SKIP_DOCKER=true ./scripts/init_db.sh
