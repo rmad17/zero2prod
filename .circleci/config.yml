@@ -15,7 +15,7 @@ jobs:
       - run:
           name: Coverage with docker
           command: docker run --security-opt seccomp=unconfined -v "${PWD}:/volume" xd009642/tarpaulin
-      - coveralls/upload
+      # - coveralls/upload
       - codecov/upload
 workflows:
   test_parallel_then_upload:
