@@ -15,3 +15,11 @@ orbs:
             name: Coverage with docker
             command: docker run --security-opt seccomp=unconfined -v "${PWD}:/volume" xd009642/tarpaulin
         - coveralls/upload
+    workflows:
+      test_parallel_then_upload:
+        jobs:
+          - coverage
+          - done:
+            requires:
+              - coverage
+workflows: null
