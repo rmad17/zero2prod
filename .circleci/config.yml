@@ -9,15 +9,14 @@ orbs:
 # See: https://circleci.com/docs/jobs-steps/#jobs-overview & https://circleci.com/docs/configuration-reference/#jobs
 jobs:
   coverage:
-    machine: true
     steps:
       - checkout
       - run:
           name: Coverage with docker
-          command: docker run --security-opt seccomp=unconfined -v "${PWD}:/volume" xd009642/tarpaulin
-      # - coveralls/upload
+          command: cargo tarpaulin --verbose --all-features --workspace --timeout 120 --out xml
       - codecov/upload
+      - coveralls/upload
 workflows:
-  test_parallel_then_upload:
+  test_then_upload:
     jobs:
       - coverage
