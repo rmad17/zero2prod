@@ -9,6 +9,8 @@ orbs:
 # See: https://circleci.com/docs/jobs-steps/#jobs-overview & https://circleci.com/docs/configuration-reference/#jobs
 jobs:
   coverage:
+    docker:
+      - image: xd009642/tarpaulin
     steps:
       - checkout
       - run:
