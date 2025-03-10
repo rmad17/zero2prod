@@ -1,6 +1,4 @@
 version: 2.1
-orbs:
-  coveralls: coveralls/coveralls@2.2.5
 jobs:
   build-and-test:
     docker:
@@ -97,13 +95,8 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install Tarpaulin
-          command: cargo install coveralls cargo-tarpaulin
-      - run:
           name: Coverage with docker
-        # command: docker run --security-opt seccomp=unconfined -v "${PWD}:/volume" xd009642/tarpaulin
-          command: cargo tarpaulin
-      - coveralls/upload
+          command: docker run --security-opt seccomp=unconfined -v "${PWD}:/volume" xd009642/tarpaulin
 
 workflows:
   version: 2
