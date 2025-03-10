@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  coveralls: coveralls/coveralls@2.2.5
 jobs:
   build-and-test:
     docker:
@@ -90,13 +92,16 @@ jobs:
           command: cargo clippy -- -D warnings
 
   coverage:
-    machine: true
+    docker:
+      - image: cimg/rust:1.85.0
     steps:
       - checkout
       - run:
+          name: Install Tarpaulin
+          command: cargo install cargo-tarpaulin
+      - run:
           name: Coverage with docker
-          command: docker run --security-opt seccomp=unconfined -v "${PWD}:/volume" xd009642/tarpaulin cargo tarpaulin --ignore-tests
-
+          command: cargo tarpaulin
 
 workflows:
   version: 2.1
