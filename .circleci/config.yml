@@ -104,8 +104,9 @@ jobs:
           name: Coverage with docker
         # command: docker run --security-opt seccomp=unconfined xd009642/tarpaulin
           command: cargo tarpaulin
-      - coveralls/upload:
-          debug: true
+      - run: curl -sL https://coveralls.io/coveralls-linux.tar.gz | tar -xz && ./coveralls
+      # - coveralls/upload:
+      #     debug: true
 
 workflows:
   version: 2.1
