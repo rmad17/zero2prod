@@ -92,7 +92,8 @@ jobs:
           command: cargo clippy -- -D warnings
 
   coverage:
-    machine: true
+    docker:
+      - image: cimg/rust:1.85.0
     steps:
       - checkout
       - run:
