@@ -111,8 +111,8 @@ workflows:
   version: 2.1
   build-test:
     jobs:
-      - build-and-test:
-      - security:
-      - format:
-      - lint:
-      - coverage:
+      - build-and-test
+      - security
+      - format
+      - lint
+      - coverage
