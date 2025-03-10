@@ -102,9 +102,14 @@ jobs:
           command: cargo install cargo-tarpaulin
       - run:
           name: Coverage with docker
-        # command: docker run --security-opt seccomp=unconfined xd009642/tarpaulin
-          command: cargo tarpaulin
-      - run: curl -sL https://coveralls.io/coveralls-linux.tar.gz | tar -xz && ./coveralls
+          command: docker run --security-opt seccomp=unconfined xd009642/tarpaulin
+          # command: cargo tarpaulin
+      - run: 
+          name: Install Coveralls Universal Reporter
+          command: curl -L https://coveralls.io/coveralls-linux.tar.gz | tar -xz -C /usr/local/bin
+      - run:
+          name: Run Coveralls Report
+          command: coveralls report
       # - coveralls/upload:
       #     debug: true
 
