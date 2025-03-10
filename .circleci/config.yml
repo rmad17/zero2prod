@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  coveralls: coveralls/coveralls@2.2.5
 jobs:
   build-and-test:
     docker:
@@ -96,6 +98,7 @@ jobs:
       - run:
           name: Coverage with docker
           command: docker run --security-opt seccomp=unconfined -v "${PWD}:/volume" xd009642/tarpaulin
+      - coveralls/upload
 
 workflows:
   version: 2
