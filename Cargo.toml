@@ -5,3 +5,4 @@ edition = "2024"
 
 [dependencies]
 coveralls = "*"
+tarpaulin = "0.1.0"
