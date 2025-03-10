@@ -97,7 +97,7 @@ jobs:
       - checkout
       - run:
           name: Coverage with docker
-          command: docker run --security-opt seccomp=unconfined -v "${PWD}:/volume" xd009642/tarpaulin
+          command: docker run --security-opt seccomp=unconfined -v "${PWD}:/" xd009642/tarpaulin
       - coveralls/upload
 
 workflows:
