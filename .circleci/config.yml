@@ -108,26 +108,11 @@ jobs:
           debug: true
 
 workflows:
-  version: 2
+  version: 2.1
   build-test:
     jobs:
       - build-and-test:
-          filters:
-            tags:
-              only: /.*/
       - security:
-          filters:
-            tags:
-              only: /.*/
       - format:
-          filters:
-            tags:
-              only: /.*/
       - lint:
-          filters:
-            tags:
-              only: /.*/
       - coverage:
-          filters:
-            tags:
-              only: /.*/
