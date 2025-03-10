@@ -102,7 +102,7 @@ jobs:
           command: cargo install cargo-tarpaulin
       - run:
           name: Coverage with docker
-          command: docker run --security-opt seccomp=unconfined xd009642/tarpaulin
+          command: docker run --security-opt seccomp=unconfined -v "${PWD}:/volume" xd009642/tarpaulin
           # command: cargo tarpaulin
       - run: 
           name: Install Coveralls Universal Reporter
