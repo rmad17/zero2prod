@@ -92,14 +92,14 @@ jobs:
           command: cargo clippy -- -D warnings
 
   coverage:
-    # machine: true
-    docker:
-      - image: cimg/rust:1.85.0
+    machine: true
+    # docker:
+    #   - image: cimg/rust:1.85.0
     steps:
       - checkout
-      - run:
-          name: Install Tarpaulin
-          command: cargo install cargo-tarpaulin
+      # - run:
+      #     name: Install Tarpaulin
+      #     command: cargo install cargo-tarpaulin
       - run:
           name: Coverage with docker
           command: docker run --security-opt seccomp=unconfined -v "${PWD}:/volume" xd009642/tarpaulin
