@@ -1,0 +1,10 @@
+[feature_a_coverage]
+features = "feature_a"
+
+[feature_a_and_b_coverage]
+features = "feature_a feature_b"
+release = true
+
+[report]
+coveralls = "COVERALLS_REPO_TOKEN"
+out = ["Html", "Xml"]
