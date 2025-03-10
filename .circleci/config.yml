@@ -101,8 +101,14 @@ jobs:
           name: Install Tarpaulin
           command: cargo install cargo-tarpaulin
       - run: 
-          name: Install Coveralls Universal Reporter
-          command: curl -L https://coveralls.io/coveralls-linux.tar.gz | chmod +x | tar -xz -C /usr/local/bin
+          name: Download Coveralls Universal Reporter
+          command: curl -L https://coveralls.io/coveralls-linux.tar.gz
+      - run: 
+          name: Permissions for Coveralls Universal Reporter
+          command: chmod +x coveralls-linux.tar.gz
+      - run: 
+          name: Extract and Install Coveralls Universal Reporter
+          command: tar -xz -C /usr/local/bin coveralls-linux.tar.gz
       - run:
           name: Coverage with docker
           command: cargo tarpaulin
