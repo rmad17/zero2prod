@@ -98,7 +98,7 @@ jobs:
       - checkout
       - run:
           name: Install Tarpaulin
-          command: cargo install coveralls
+          command: cargo install coveralls cargo-tarpaulin
       - run:
           name: Coverage with docker
         # command: docker run --security-opt seccomp=unconfined -v "${PWD}:/volume" xd009642/tarpaulin
