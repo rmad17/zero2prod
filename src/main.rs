@@ -32,6 +32,7 @@ mod tests {
             .await
             .expect("Expectation!");
         assert!(response.status().is_success());
-        assert!(response.bytes().await == "Healthy!".to_string());
+        let response_text = response.text().await.unwrap();
+        assert!(response_text == "Healthy!".to_string());
     }
 }
