@@ -19,20 +19,23 @@ async fn health_check() -> String {
 
 #[cfg(test)]
 mod tests {
+    use axum::{Router, routing::get};
+    use axum_test::TestServer;
+
+    use crate::health_check;
 
     #[tokio::test]
     async fn test_health_check_api() {
         // Assuming your server is running on port 3000
         let url = "http://0.0.0.0:3000/health-check";
+        let router = Router::new().route("/health-check", get(health_check));
+        let server = TestServer::new(router)?;
 
         //let json_payload = serde_json::json!({"foo": "test"});
-        let response = reqwest::Client::new()
-            .get(url)
-            .send()
-            .await
-            .expect("Expectation!");
-        assert!(response.status().is_success());
-        let response_text = response.text().await.unwrap();
+        let response = server.get(url).await;
+        response.assert_status_ok();
+        let response_text = response.text();
+        response.assert_text("Healthy!");
         assert!(response_text == "Healthy!".to_string());
     }
 }
