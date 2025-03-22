@@ -1,15 +1,12 @@
-#[cfg(test)]
-//use axum::{Router, routing::get};
-use axum_test::TestServer;
-
-//use crate::health_check;
 async fn start_app() {
     let server = zero2prod::run();
     let _ = tokio::spawn(server);
 }
 
 #[tokio::test]
+
 async fn test_health_check_api() {
+    use axum_test::TestServer;
     start_app().await;
 
     // Assuming your server is running on port 3000
