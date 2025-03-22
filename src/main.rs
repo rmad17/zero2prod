@@ -29,7 +29,7 @@ mod tests {
         // Assuming your server is running on port 3000
         let url = "http://0.0.0.0:3000/health-check";
         let router = Router::new().route("/health-check", get(health_check));
-        let server = TestServer::new(router)?;
+        let server = TestServer::new(router).unwrap();
 
         //let json_payload = serde_json::json!({"foo": "test"});
         let response = server.get(url).await;
