@@ -16,5 +16,5 @@ pub fn app() -> Router {
 
 // which calls one of these handlers
 async fn health_check() -> String {
-    return "Healthy!".to_string();
+    "Healthy!".to_string()
 }
