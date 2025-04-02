@@ -1,10 +1,10 @@
 use axum::{Router, routing::get};
 
-pub async fn run() {
+pub async fn run(addr: String) {
     // build our application with a single route
 
     // run our app with hyper, listening globally on port 3000
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
+    let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
     axum::serve(listener, app()).await.unwrap();
 }
 
