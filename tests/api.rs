@@ -1,4 +1,5 @@
 use axum_test::TestServer;
+use serde_json::json;
 use tokio::net::TcpListener;
 
 async fn start_app() -> String {
@@ -33,12 +34,25 @@ async fn test_health_check_api() {
 #[tokio::test]
 async fn subscribe_returns_a_200_for_valid_form_data() {
     let addr = start_app().await;
-    let url = format!("http://{}/{}", addr, "health-check");
+    let url = format!("http://{}/{}", addr, "subscribe");
 
     let router = zero2prod::app();
     let server = TestServer::new(router).unwrap();
 
-    //let json_payload = serde_json::json!({"foo": "test"});
-    let response = server.get(url.as_str()).await;
+    let payload = serde_json::json!({"name": "Isco Alcaron", "email": "isco@rmad.com"});
+    let response = server.post(url.as_str()).json(&json!(payload)).await;
     response.assert_status_ok();
+}
+
+#[tokio::test]
+async fn subscribe_returns_a_400_for_valid_form_data() {
+    let addr = start_app().await;
+    let url = format!("http://{}/{}", addr, "subscribe");
+
+    let router = zero2prod::app();
+    let server = TestServer::new(router).unwrap();
+
+    let payload = serde_json::json!({});
+    let response = server.post(url.as_str()).json(&json!(payload)).await;
+    response.assert_status_bad_request();
 }

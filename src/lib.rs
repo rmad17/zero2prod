@@ -1,4 +1,7 @@
-use axum::{Router, routing::get};
+use axum::{
+    Router,
+    routing::{get, post},
+};
 
 pub async fn run(addr: String) {
     // build our application with a single route
@@ -12,9 +15,14 @@ pub fn app() -> Router {
     Router::new()
         .route("/", get(|| async { "Hello, World!" }))
         .route("/health-check", get(health_check))
+        .route("/subscribe", post(subscribe))
 }
 
 // which calls one of these handlers
 async fn health_check() -> String {
     "Healthy!".to_string()
+}
+
+async fn subscribe() -> String {
+    "Congratulations!".to_string()
 }
