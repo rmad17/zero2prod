@@ -1,4 +1,4 @@
-use axum_test::TestServer;
+use axum_test::{TestServer, multipart::MultipartForm};
 use serde_json::json;
 use tokio::net::TcpListener;
 
@@ -37,11 +37,18 @@ async fn subscribe_returns_a_200_for_valid_form_data() {
     let url = format!("http://{}/{}", addr, "subscribe");
 
     let router = zero2prod::app();
-    let mut server = TestServer::new(router).unwrap();
-    server.add_header("Content-Type", "application/x-www-form-urlencoded");
+    let server = TestServer::new(router).unwrap();
+    let multipart_form = MultipartForm::new()
+        .add_text("name", "Isco Alcaron")
+        .add_text("email", "isco@rmad.com");
 
-    let payload = serde_json::json!({"name": "Isco Alcaron", "email": "isco@rmad.com"});
-    let response = server.post(url.as_str()).json(&json!(payload)).await;
+    //let payload = serde_json::json!({"name": "Isco Alcaron", "email": "isco@rmad.com"});
+    //let response = server.post(url.as_str()).json(&json!(payload)).await;
+    let response = server
+        .post(url.as_str())
+        .content_type("application/x-www-form-urlencoded")
+        .multipart(multipart_form)
+        .await;
     response.assert_status_ok();
 }
 
@@ -51,10 +58,13 @@ async fn subscribe_returns_a_400_for_valid_form_data() {
     let url = format!("http://{}/{}", addr, "subscribe");
 
     let router = zero2prod::app();
-    let mut server = TestServer::new(router).unwrap();
-    server.add_header("Content-Type", "application/x-www-form-urlencoded");
+    let server = TestServer::new(router).unwrap();
 
     let payload = serde_json::json!({});
-    let response = server.post(url.as_str()).json(&json!(payload)).await;
+    let response = server
+        .post(url.as_str())
+        .content_type("application/x-www-form-urlencoded")
+        .json(&json!(payload))
+        .await;
     response.assert_status_bad_request();
 }
