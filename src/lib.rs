@@ -1,7 +1,16 @@
 use axum::{
-    Router,
+    Form, Router,
+    response::Html,
     routing::{get, post},
 };
+use serde::Deserialize;
+
+#[derive(Deserialize)]
+#[allow(dead_code)]
+struct FormData {
+    email: String,
+    name: String,
+}
 
 pub async fn run(addr: String) {
     // build our application with a single route
@@ -23,6 +32,6 @@ async fn health_check() -> String {
     "Healthy!".to_string()
 }
 
-async fn subscribe() -> String {
-    "Congratulations!".to_string()
+async fn subscribe(Form(_data): Form<FormData>) -> Html<String> {
+    Html(format!("Congratulations {}!", &_data.name))
 }

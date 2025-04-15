@@ -37,7 +37,8 @@ async fn subscribe_returns_a_200_for_valid_form_data() {
     let url = format!("http://{}/{}", addr, "subscribe");
 
     let router = zero2prod::app();
-    let server = TestServer::new(router).unwrap();
+    let mut server = TestServer::new(router).unwrap();
+    server.add_header("Content-Type", "application/x-www-form-urlencoded");
 
     let payload = serde_json::json!({"name": "Isco Alcaron", "email": "isco@rmad.com"});
     let response = server.post(url.as_str()).json(&json!(payload)).await;
@@ -50,7 +51,8 @@ async fn subscribe_returns_a_400_for_valid_form_data() {
     let url = format!("http://{}/{}", addr, "subscribe");
 
     let router = zero2prod::app();
-    let server = TestServer::new(router).unwrap();
+    let mut server = TestServer::new(router).unwrap();
+    server.add_header("Content-Type", "application/x-www-form-urlencoded");
 
     let payload = serde_json::json!({});
     let response = server.post(url.as_str()).json(&json!(payload)).await;
