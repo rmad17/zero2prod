@@ -1,9 +1,13 @@
+use std::env;
+
 use axum::{
     Form, Router,
     http::HeaderMap,
     response::Html,
     routing::{get, post},
 };
+use migration::{Migrator, MigratorTrait};
+use sea_orm::Database;
 use serde::Deserialize;
 
 #[derive(Deserialize)]
@@ -14,6 +18,14 @@ struct FormData {
 
 pub async fn run(addr: String) {
     // build our application with a single route
+    dotenvy::dotenv().ok();
+    let db_url = env::var("DATABASE_URL").expect("DATABASE_URL is not set in .env file");
+
+    let conn = Database::connect(db_url)
+        .await
+        .expect("Database connection failed");
+
+    Migrator::up(&conn, None).await.unwrap();
 
     // run our app with hyper, listening globally on port 3000
     let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
