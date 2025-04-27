@@ -1,3 +1,4 @@
+use axum::{Form, http};
 use axum_test::{TestServer, multipart::MultipartForm};
 use serde_json::json;
 use tokio::net::TcpListener;
@@ -46,7 +47,12 @@ async fn subscribe_returns_a_200_for_valid_form_data() {
     //let response = server.post(url.as_str()).json(&json!(payload)).await;
     let response = server
         .post(url.as_str())
+        .add_header(
+            http::header::CONTENT_TYPE,
+            "application/x-www-form-urlencoded",
+        )
         .content_type("application/x-www-form-urlencoded")
+        //.content_type("multipart/form-data")
         .multipart(multipart_form)
         .await;
     response.assert_status_ok();
@@ -63,6 +69,10 @@ async fn subscribe_returns_a_400_for_valid_form_data() {
     let payload = serde_json::json!({});
     let response = server
         .post(url.as_str())
+        .add_header(
+            http::header::CONTENT_TYPE,
+            "application/x-www-form-urlencoded",
+        )
         .content_type("application/x-www-form-urlencoded")
         .json(&json!(payload))
         .await;

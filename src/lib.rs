@@ -1,12 +1,12 @@
 use axum::{
     Form, Router,
+    http::HeaderMap,
     response::Html,
     routing::{get, post},
 };
 use serde::Deserialize;
 
 #[derive(Deserialize)]
-#[allow(dead_code)]
 struct FormData {
     email: String,
     name: String,
@@ -32,6 +32,7 @@ async fn health_check() -> String {
     "Healthy!".to_string()
 }
 
-async fn subscribe(Form(_data): Form<FormData>) -> Html<String> {
-    Html(format!("Congratulations {}!", &_data.name))
+async fn subscribe(headers: HeaderMap, Form(_data): Form<FormData>) -> Html<String> {
+    println!("Content: {:?}", headers);
+    Html(format!("Congratulations {} {}!", &_data.name, &_data.email))
 }
