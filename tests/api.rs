@@ -1,6 +1,4 @@
-use axum::{Form, http};
-use axum_test::{TestServer, multipart::MultipartForm};
-use serde_json::json;
+use axum_test::TestServer;
 use tokio::net::TcpListener;
 
 async fn start_app() -> String {
@@ -24,7 +22,6 @@ async fn test_health_check_api() {
     let router = zero2prod::app();
     let server = TestServer::new(router).unwrap();
 
-    //let json_payload = serde_json::json!({"foo": "test"});
     let response = server.get(url.as_str()).await;
     response.assert_status_ok();
     let response_text = response.text();
@@ -39,42 +36,29 @@ async fn subscribe_returns_a_200_for_valid_form_data() {
 
     let router = zero2prod::app();
     let server = TestServer::new(router).unwrap();
-    let multipart_form = MultipartForm::new()
-        .add_text("name", "Isco Alcaron")
-        .add_text("email", "isco@rmad.com");
 
-    //let payload = serde_json::json!({"name": "Isco Alcaron", "email": "isco@rmad.com"});
-    //let response = server.post(url.as_str()).json(&json!(payload)).await;
+    let body_text = "name=John+Doe&email=john.doe%40example.com";
     let response = server
         .post(url.as_str())
-        .add_header(
-            http::header::CONTENT_TYPE,
-            "application/x-www-form-urlencoded",
-        )
+        .text(body_text)
         .content_type("application/x-www-form-urlencoded")
-        //.content_type("multipart/form-data")
-        .multipart(multipart_form)
         .await;
     response.assert_status_ok();
 }
 
 #[tokio::test]
-async fn subscribe_returns_a_400_for_valid_form_data() {
+async fn subscribe_returns_a_400_for_invalid_form_data() {
     let addr = start_app().await;
     let url = format!("http://{}/{}", addr, "subscribe");
 
     let router = zero2prod::app();
     let server = TestServer::new(router).unwrap();
 
-    let payload = serde_json::json!({});
+    let body_text = "name= &email= ";
     let response = server
         .post(url.as_str())
-        .add_header(
-            http::header::CONTENT_TYPE,
-            "application/x-www-form-urlencoded",
-        )
+        .text(body_text)
         .content_type("application/x-www-form-urlencoded")
-        .json(&json!(payload))
         .await;
     response.assert_status_bad_request();
 }
