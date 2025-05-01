@@ -7,8 +7,9 @@ use axum::{
     routing::{get, post},
 };
 use migration::{Migrator, MigratorTrait};
-use sea_orm::Database;
+use sea_orm::{Database, DbConn};
 use serde::Deserialize;
+use Subscription;
 
 #[derive(Deserialize)]
 struct FormData {
@@ -47,4 +48,10 @@ async fn health_check() -> String {
 async fn subscribe(headers: HeaderMap, Form(_data): Form<FormData>) -> Html<String> {
     println!("Content: {:?}", headers);
     Html(format!("Congratulations {} {}!", &_data.name, &_data.email))
+}
+
+impl dborm{
+    pub async fn create(db: %DbConn, form_data: Subscription){
+
+    }
 }
