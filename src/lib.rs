@@ -1,5 +1,6 @@
 use std::env;
 
+// use Subscription;
 use axum::{
     Form, Router,
     http::HeaderMap,
@@ -9,7 +10,6 @@ use axum::{
 use migration::{Migrator, MigratorTrait};
 use sea_orm::{Database, DbConn};
 use serde::Deserialize;
-use Subscription;
 
 #[derive(Deserialize)]
 struct FormData {
@@ -50,8 +50,6 @@ async fn subscribe(headers: HeaderMap, Form(_data): Form<FormData>) -> Html<Stri
     Html(format!("Congratulations {} {}!", &_data.name, &_data.email))
 }
 
-impl dborm{
-    pub async fn create(db: %DbConn, form_data: Subscription){
-
-    }
-}
+// impl dborm {
+//     pub async fn create(db: db_conn, form_data: Subscription) {}
+// }
